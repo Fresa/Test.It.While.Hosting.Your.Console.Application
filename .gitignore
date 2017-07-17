@@ -1,0 +1,6 @@
+src/Test.It.While.Hosting.Your.Console.Application/obj/
+src/Test.It.While.Hosting.Your.Console.Application/bin/
+tests/Test.It.While.Hosting.Your.Console.Application.Tests/obj/
+tests/Test.It.While.Hosting.Your.Console.Application.Tests/bin/
+packages/
+!tools/**
