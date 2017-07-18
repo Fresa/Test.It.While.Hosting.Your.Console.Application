@@ -60,11 +60,11 @@
     <Compile Include="Consoles\IConsoleClient.cs" />
     <Compile Include="Consoles\TestConsole.cs" />
     <Compile Include="DefaultConsoleApplicationBuilder.cs" />
-    <Compile Include="DefaultConsoleApplicationConfiguration.cs" />
+    <Compile Include="DefaultConsoleApplicationHostStarter.cs" />
     <Compile Include="DefaultConsoleApplicationStarter.cs" />
     <Compile Include="IConsoleApplication.cs" />
     <Compile Include="IConsoleApplicationBuilder.cs" />
-    <Compile Include="IConsoleApplicationConfiguration.cs" />
+    <Compile Include="IConsoleApplicationHostStarter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -3,7 +3,7 @@ using Test.It.While.Hosting.Your.Console.Application.Consoles;
 
 namespace Test.It.While.Hosting.Your.Console.Application
 {
-    public class DefaultConsoleApplicationConfiguration<TApplicationBuilder> : IConsoleApplicationConfiguration 
+    public class DefaultConsoleApplicationHostStarter<TApplicationBuilder> : IConsoleApplicationHostStarter 
         where TApplicationBuilder : IConsoleApplicationBuilder, new()
     {
         public IConsoleClient Start(ITestConfigurer testConfigurer, params string[] arguments)

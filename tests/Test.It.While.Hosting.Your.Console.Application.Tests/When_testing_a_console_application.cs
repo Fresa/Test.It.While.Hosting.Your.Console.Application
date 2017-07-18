@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Test.It.While.Hosting.Your.Console.Application.Tests
 {
-    public class When_testing_a_console_application : XUnitConsoleApplicationSpecification<DefaultConsoleApplicationConfiguration<TestConsoleApplicationBuilder>>
+    public class When_testing_a_console_application : XUnitConsoleApplicationSpecification<DefaultConsoleApplicationHostStarter<TestConsoleApplicationBuilder>>
     {
         private readonly List<string> _output = new List<string>();
 

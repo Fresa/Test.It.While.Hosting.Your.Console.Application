@@ -7,7 +7,7 @@ using Test.It.While.Hosting.Your.Console.Application.Consoles;
 namespace Test.It.While.Hosting.Your.Console.Application
 {
     public abstract class ConsoleApplicationSpecification<TConfiguration> : IUseConfiguration<TConfiguration>
-        where TConfiguration : class, IConsoleApplicationConfiguration, new()
+        where TConfiguration : class, IConsoleApplicationHostStarter, new()
     {
         private readonly AutoResetEvent _wait = new AutoResetEvent(false);
 
