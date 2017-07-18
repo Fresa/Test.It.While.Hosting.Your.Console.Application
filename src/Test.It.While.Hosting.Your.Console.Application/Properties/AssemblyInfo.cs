@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Test.It.While.Hosting.Your.Console.Application")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Testing framework that hosts your Console Application during test execution")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Fredrik Arvidsson")]
 [assembly: AssemblyProduct("Test.It.While.Hosting.Your.Console.Application")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCopyright("Copyright © 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
