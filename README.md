@@ -21,6 +21,9 @@ In comes TTest.It.While.Hosting.Your.Console.Application to save the day!
 ## Download
 https://www.nuget.org/packages/Test.It.While.Hosting.Your.Console.Application
 
+## Release Notes
+**1.1.0** Changed the definition and name of the IConsoleApplicationConfiguration to IConsoleApplicationHostStarter
+
 ## Getting Started
 tl;dr:
 Runnable example available here: https://github.com/Fresa/Test.It.While.Hosting.Your.Console.Application/blob/master/tests/Test.It.While.Hosting.Your.Console.Application.Tests/When_testing_a_console_application.cs
@@ -48,6 +51,3 @@ This is your test method. This is where you assert what ever you expect to happe
 
 ### Best Practices
 When reconfiguring your application during startup, please be advised that doing to much reconfiguring will heavy alter your application behaviour and you might no longer test any relevant functionality of the Console Application. Keep the reconfiguration to a minimum to be sure to test as much as possible of the soon to be live functionality. Try to reconfigure your 3rd party dependecy systems as close to the network level as possible to assure you keep the reconfiguration to a minimum.
-
-## Release Notes
-**1.1.0** Changed the definition and name of the IConsoleApplicationConfiguration to IConsoleApplicationHostStarter
