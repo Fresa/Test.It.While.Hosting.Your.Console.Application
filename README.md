@@ -1,6 +1,8 @@
 # Test.It.While.Hosting.Your.Console.Application
 Testing framework that hosts your Console Application during test execution
 
+![Continuous Delivery](https://github.com/Fresa/Test.It.While.Hosting.Your.Console.Application/workflows/Continuous%20Delivery/badge.svg)
+
 ## Why?
 This library helps you simplify writing integration tests for your Console Application. It will bootstrap, start and host your Console Application in memory while giving you handles to interact with the application making it possible to mock integration points to isolate the application during testing. This way you are no longer dependent on 3rd party installations when you run your application, and you no longer need to do tricky cleanup sessions before and after your tests, everything is done in memory and erased as soon as the test finishes.
 
