@@ -14,7 +14,7 @@ namespace Test.It.While.Hosting.Your.Console.Application
         /// </summary>
         /// <param name="configurer">A test configuration used to override the Console Application configuration.</param>
         /// <returns>An application starter</returns>
-        IApplicationStarter<IConsoleClient> CreateWith(ITestConfigurer configurer);
+        IApplicationStarter<IHostController> CreateWith(ITestConfigurer configurer);
 
         /// <summary>
         /// Configure with start arguments

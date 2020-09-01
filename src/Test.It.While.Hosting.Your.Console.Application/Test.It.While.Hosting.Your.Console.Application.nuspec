@@ -20,8 +20,8 @@
     </dependencies>    
   </metadata>
   <files>
-    <file src="bin\$configuration$\$id$*.dll" target="lib\net462"></file>
-    <file src="bin\$configuration$\$id$*.pdb" target="lib\net462"></file>
+    <file src="bin\$hostStarter$\$id$*.dll" target="lib\net462"></file>
+    <file src="bin\$hostStarter$\$id$*.pdb" target="lib\net462"></file>
     <file src="**\*.cs" exclude="obj\**\*.*" target="src" />
   </files>
 </package>

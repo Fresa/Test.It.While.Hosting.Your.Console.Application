@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Test.It.Specifications;
 
 namespace Test.It.While.Hosting.Your.Console.Application.Tests
@@ -20,10 +21,10 @@ namespace Test.It.While.Hosting.Your.Console.Application.Tests
                 _app = app;
             }
 
-            public int Start(params string[] args)
-            {
-                return _app.Start(args);
-            }
+            public async Task<int> RunAsync(
+                params string[] args)
+                => await _app.StartAsync(args)
+                             .ConfigureAwait(false);
         }
     }
 }

@@ -1,19 +1,35 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using Test.It.While.Hosting.Your.Console.Application.Consoles;
 
 namespace Test.It.While.Hosting.Your.Console.Application
 {
-    internal class DefaultConsoleApplicationStarter<TConsoleClient> : BaseConsoleApplicationStarter<TConsoleClient> 
-        where TConsoleClient : IConsoleClient
+    internal class
+        DefaultConsoleApplicationStarter<TConsoleClient> :
+            BaseConsoleApplicationStarter<TConsoleClient>
+        where TConsoleClient : IHostController
     {
-        public DefaultConsoleApplicationStarter(Action starter, TConsoleClient console)
+        public DefaultConsoleApplicationStarter(
+            IApplicationHost host,
+            IEnumerable arguments,
+            TConsoleClient console)
         {
             Client = console;
-            Starter = starter;
+            Host = host;
+            Environment = new Dictionary<string, object>
+            {
+                {
+                    EnvironmentKeys.StartParameters,
+                    arguments
+                }
+            };
         }
+
+        protected override IDictionary<string, object> Environment { get; }
 
         protected override TConsoleClient Client { get; }
 
-        protected override Action Starter { get; }
+        protected override IApplicationHost Host { get; }
     }
 }
