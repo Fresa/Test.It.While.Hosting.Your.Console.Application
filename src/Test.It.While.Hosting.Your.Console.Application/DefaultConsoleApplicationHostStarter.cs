@@ -10,7 +10,7 @@ namespace Test.It.While.Hosting.Your.Console.Application
     {
         private ConsoleApplicationTestServer _server;
 
-        public IHostController Create(ITestConfigurer testConfigurer, params string[] arguments)
+        public IConsoleClient Create(ITestConfigurer testConfigurer, params string[] arguments)
         {
             var applicationBuilder = new TApplicationBuilder();
             _server = ConsoleApplicationTestServer

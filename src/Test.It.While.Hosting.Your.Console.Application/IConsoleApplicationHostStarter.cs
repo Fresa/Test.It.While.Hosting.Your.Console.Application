@@ -14,7 +14,7 @@ namespace Test.It.While.Hosting.Your.Console.Application
         /// <param name="testConfigurer">Test configurer</param>
         /// <param name="arguments">Start arguments</param>
         /// <returns>Client that communicates with the hosted console application</returns>
-        IHostController Create(
+        IConsoleClient Create(
             ITestConfigurer testConfigurer,
             params string[] arguments);
 

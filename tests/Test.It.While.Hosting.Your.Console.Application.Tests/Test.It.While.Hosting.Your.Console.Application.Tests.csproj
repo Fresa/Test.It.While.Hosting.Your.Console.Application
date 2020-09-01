@@ -4,18 +4,22 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
-      <PackageReference Include="FakeItEasy" version="3.3.2" />
-      <PackageReference Include="ShouldFluent" version="1.1.19" />
+    <Compile Remove="Properties\**" />
+    <EmbeddedResource Remove="Properties\**" />
+    <None Remove="Properties\**" />
+  </ItemGroup>
+  <ItemGroup>
+      <PackageReference Include="FluentAssertions" Version="5.10.3" />
       <PackageReference Include="Test.It" version="3.0.0" />
-      <PackageReference Include="xunit" version="2.2.0" />
-      <PackageReference Include="xunit.extensibility.core" Version="2.2.0" />
-      <PackageReference Include="xunit.extensibility.execution" Version="2.2.0" />
-      <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
+      <PackageReference Include="xunit" version="2.4.1" />
+      <PackageReference Include="xunit.extensibility.core" Version="2.4.1" />
+      <PackageReference Include="xunit.extensibility.execution" Version="2.4.1" />
+      <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Test.It.While.Hosting.Your.Console.Application\Test.It.While.Hosting.Your.Console.Application.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
 </Project>

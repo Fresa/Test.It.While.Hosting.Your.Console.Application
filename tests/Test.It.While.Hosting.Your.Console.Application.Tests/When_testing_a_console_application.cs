@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Should.Fluent;
-using Test.It.While.Hosting.Your.Console.Application.Consoles;
+using FluentAssertions;
 using Xunit;
 
 namespace Test.It.While.Hosting.Your.Console.Application.Tests
@@ -29,15 +28,14 @@ namespace Test.It.While.Hosting.Your.Console.Application.Tests
         [Fact]
         public void It_should_have_written_the_input()
         {
-            _output.Should()
-                   .Contain.Item("test");
+            _output.Should().Contain("test");
         }
 
         [Fact]
         public void It_should_have_output_the_start_arguments()
         {
             _output.Should()
-                   .Contain.Item("Arguments: arg1, arg2");
+                   .Contain("Arguments: arg1, arg2");
         }
     }
 }

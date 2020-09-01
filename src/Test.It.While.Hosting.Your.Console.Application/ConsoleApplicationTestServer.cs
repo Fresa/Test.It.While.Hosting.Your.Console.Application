@@ -20,7 +20,7 @@ namespace Test.It.While.Hosting.Your.Console.Application
             Client = builder.Controller;
         }
 
-        public IHostController Client { get; }
+        public IConsoleClient Client { get; }
 
         public static ConsoleApplicationTestServer Create(IApplicationStarter<IHostController> applicationStarter)
         {
