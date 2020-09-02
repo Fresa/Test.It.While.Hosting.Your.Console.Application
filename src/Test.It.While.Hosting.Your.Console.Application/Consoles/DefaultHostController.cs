@@ -52,7 +52,7 @@ namespace Test.It.While.Hosting.Your.Console.Application.Consoles
         {
             if (timeout == default)
             {
-                timeout = new TimeSpan(-1);
+                timeout = Timeout.InfiniteTimeSpan;
             }
 
             if (await _readLineWaiter.WaitAsync(timeout, cancellationToken)
@@ -61,7 +61,6 @@ namespace Test.It.While.Hosting.Your.Console.Application.Consoles
                 if (cancellationToken.IsCancellationRequested)
                 {
                     throw new TimeoutException("Cancellation requested while waiting for input");
-
                 }
 
                 throw new TimeoutException($"Waited for input for {timeout} seconds.");
