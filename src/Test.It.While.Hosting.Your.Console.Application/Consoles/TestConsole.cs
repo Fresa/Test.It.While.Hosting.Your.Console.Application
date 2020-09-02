@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Test.It.While.Hosting.Your.Console.Application.Consoles
 {
-    internal class TestConsole : IConsole
+    internal class TestConsole : IHostController
     {
         private readonly ConcurrentQueue<string> _readableLines = new ConcurrentQueue<string>();
         private readonly ManualResetEventSlim _readLineWaiter = new ManualResetEventSlim();
@@ -16,12 +18,8 @@ namespace Test.It.While.Hosting.Your.Console.Application.Consoles
         {
             lock (_outputLock)
             {
-                if (OutputReceivedPrivate == null)
-                {
-                    _output.Enqueue(message);
-                    return;
-                }
-                OutputReceivedPrivate.Invoke(this, message);
+                OutputReceivedPrivate?.Invoke(this, message);
+                _output.Enqueue(message);
             }
         }
 
@@ -32,7 +30,7 @@ namespace Test.It.While.Hosting.Your.Console.Application.Consoles
             {
                 lock (_outputLock)
                 {
-                    while (_output.TryDequeue(out var message))
+                    foreach (var message in _output)
                     {
                         value.Invoke(this, message);
                     }
@@ -112,5 +110,49 @@ namespace Test.It.While.Hosting.Your.Console.Application.Consoles
             }
             DisconnectedPrivate?.Invoke(this, exitCode);
         }
+
+        #region ExceptionRaised
+        private readonly List<(Exception, CancellationToken)> _exceptionsRaised =
+            new List<(Exception, CancellationToken)>();
+        private readonly object _exceptionLock = new object();
+
+        private event HandleExceptionAsync OnExceptionPrivate = (exception, token) =>
+            Task.CompletedTask;
+        public event HandleExceptionAsync OnUnhandledExceptionAsync
+        {
+            add
+            {
+                lock (_exceptionLock)
+                {
+                    foreach (var (exception, cancellationToken) in _exceptionsRaised)
+                    {
+                        value.Invoke(exception, cancellationToken);
+                    }
+                    OnExceptionPrivate += value;
+                }
+            }
+            remove
+            {
+                lock (_exceptionLock)
+                {
+                    OnExceptionPrivate -= value;
+                }
+            }
+        }
+
+        public async Task RaiseExceptionAsync(Exception exception,
+            CancellationToken cancellationToken)
+        {
+            lock (_exceptionLock)
+            {
+                _exceptionsRaised.Add((exception, cancellationToken));
+            }
+
+            await OnExceptionPrivate.Invoke(exception, cancellationToken);
+        }
+        #endregion
     }
+
+    public delegate Task HandleExceptionAsync(Exception exception,
+        CancellationToken cancellationToken);
 }
