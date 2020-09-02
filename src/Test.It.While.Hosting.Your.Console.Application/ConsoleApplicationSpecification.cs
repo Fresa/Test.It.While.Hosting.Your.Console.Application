@@ -41,23 +41,21 @@ namespace Test.It.While.Hosting.Your.Console.Application
                 _waitForDisconnect.Release();
             };
 
-            await hostStarter.StartAsync(cancellationToken)
+            var timeoutCancellationToken = CancellationTokenSource
+                                           .CreateLinkedTokenSource(
+                                               cancellationToken,
+                                               new CancellationTokenSource(
+                                                   Timeout).Token)
+                                           .Token;
+
+            await hostStarter.StartAsync(timeoutCancellationToken)
                              .ConfigureAwait(false);
 
-            await WhenAsync(cancellationToken)
+            await WhenAsync(timeoutCancellationToken)
                 .ConfigureAwait(false);
 
-            await WaitForDisconnect(cancellationToken)
-                .ConfigureAwait(false);
-        }
-
-        private async Task WaitForDisconnect(CancellationToken cancellationToken)
-        {
-            if (await _waitForDisconnect.WaitAsync(Timeout, cancellationToken)
-                                        .ConfigureAwait(false) == false)
-            {
-                throw new TimeoutException($"Waited {Timeout.Seconds} seconds.");
-            }
+            await _waitForDisconnect.WaitAsync(timeoutCancellationToken)
+                                    .ConfigureAwait(false);
         }
 
         /// <summary>
