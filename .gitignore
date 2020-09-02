@@ -4,3 +4,4 @@ tests/Test.It.While.Hosting.Your.Console.Application.Tests/obj/
 tests/Test.It.While.Hosting.Your.Console.Application.Tests/bin/
 packages/
 !tools/**
+nuget-packages/

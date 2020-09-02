@@ -29,10 +29,13 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Test
-      run: dotnet test --configuration Release --no-restore --verbosity normal
+      run: dotnet test --configuration Release --no-restore --verbosity normal      
+    - name: Pack
+      if: ${{ steps.set-version.outputs.new_version && github.ref == 'refs/heads/master' }}
+      run: dotnet pack src/Test.It.While.Hosting.Your.Console.Application/Test.It.While.Hosting.Your.Console.Application.csproj --no-build -p:PackageVersion=${{ steps.set-version.outputs.new_version }} -p:PackageReleaseNotes="${{ steps.set-version.outputs.changelog }}" -c Release -o nuget-packages
     - name: Publish to nuget.org
       uses: rohith/publish-nuget@v2
-      if: ${{ steps.set-version.outputs.new_tag && github.ref == 'refs/heads/master' }}
+      if: ${{ steps.set-version.outputs.new_version && github.ref == 'refs/heads/master' }}
       with:
         # Filepath of the project to be packaged, relative to root of repository
         PROJECT_FILE_PATH: src/Test.It.While.Hosting.Your.Console.Application/Test.It.While.Hosting.Your.Console.Application.csproj
