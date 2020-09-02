@@ -58,6 +58,12 @@ namespace Test.It.While.Hosting.Your.Console.Application.Consoles
             if (await _readLineWaiter.WaitAsync(timeout, cancellationToken)
                                      .ConfigureAwait(false) == false)
             {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    throw new TimeoutException("Cancellation requested while waiting for input");
+
+                }
+
                 throw new TimeoutException($"Waited for input for {timeout} seconds.");
             }
 
