@@ -46,29 +46,19 @@ namespace Test.It.While.Hosting.Your.Console.Application.Consoles
             }
         }
 
-        private const int ReadTimeoutInSeconds = 5;
-
-        public string ReadLine()
-        {
-            while (true)
-            {
-
-            }
-        }
-
         public async ValueTask<string> ReadAsync(
             TimeSpan timeout = default,
             CancellationToken cancellationToken = default)
         {
             if (timeout == default)
             {
-                timeout = new TimeSpan(ReadTimeoutInSeconds * 1000);
+                timeout = new TimeSpan(-1);
             }
 
             if (await _readLineWaiter.WaitAsync(timeout, cancellationToken)
                                      .ConfigureAwait(false) == false)
             {
-                throw new TimeoutException($"Waited for input for {ReadTimeoutInSeconds} seconds.");
+                throw new TimeoutException($"Waited for input for {timeout} seconds.");
             }
 
             if (_readableLines.TryDequeue(out var readLine))
