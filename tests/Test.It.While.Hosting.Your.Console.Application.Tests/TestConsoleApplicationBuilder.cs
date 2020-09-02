@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Test.It.Specifications;
+using Test.It.While.Hosting.Your.Console.Application.Consoles;
 
 namespace Test.It.While.Hosting.Your.Console.Application.Tests
 {
@@ -7,7 +8,7 @@ namespace Test.It.While.Hosting.Your.Console.Application.Tests
     {
         public override IConsoleApplication Create(ITestConfigurer configurer)
         {
-            var app = new TestConsoleApp(configurer.Configure);
+            var app = new TestConsoleApp(configurer.Configure, Console);
 
             return new TestConsoleApplicationWrapper(app);
         }

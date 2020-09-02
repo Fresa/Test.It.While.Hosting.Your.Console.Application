@@ -6,34 +6,40 @@ namespace Test.It.While.Hosting.Your.Console.Application.Tests
 {
     public class TestConsoleApp
     {
+        private readonly IConsole _console;
         private static TestConsoleApp _app;
         private readonly SimpleServiceContainer _serviceContainer;
 
-        public TestConsoleApp(Action<IServiceContainer> reconfigurer)
+        public TestConsoleApp(
+            Action<IServiceContainer> reconfigurer,
+            IConsole console)
         {
+            _console = console;
             _serviceContainer = new SimpleServiceContainer();
-            _serviceContainer.RegisterSingleton<IConsole, Consoles.Console>();
 
             reconfigurer(_serviceContainer);
             _serviceContainer.Verify();
         }
 
-        public Task<int> StartAsync(params string[] args)
+        public async Task<int> StartAsync(
+            params string[] args)
         {
-            var console = _serviceContainer.Resolve<IConsole>();
-            console.WriteLine(console.ReadLine());
-            console.WriteLine("Arguments: " + string.Join(", ", args));
+            _console.WriteLine(
+                await _console.ReadAsync()
+                              .ConfigureAwait(false));
+            _console.WriteLine("Arguments: " + string.Join(", ", args));
             Stopped?.Invoke(this, 0);
-            return Task.FromResult(0);
+            return 0;
         }
 
         public event EventHandler<int> Stopped;
 
-        public static async Task<int> Main(params string[] args)
+        public static async Task<int> Main(
+            params string[] args)
         {
-            _app = new TestConsoleApp(container => { });
+            _app = new TestConsoleApp(container => { }, new Consoles.Console());
             return await _app.StartAsync(args)
-                .ConfigureAwait(false);
+                             .ConfigureAwait(false);
         }
     }
 }

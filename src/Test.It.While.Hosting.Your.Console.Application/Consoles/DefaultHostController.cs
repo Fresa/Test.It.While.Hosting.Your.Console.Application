@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Test.It.While.Hosting.Your.Console.Application.Consoles
 {
-    internal class TestConsole : IHostController
+    internal class DefaultHostController : IHostController
     {
         private readonly ConcurrentQueue<string> _readableLines = new ConcurrentQueue<string>();
-        private readonly ManualResetEventSlim _readLineWaiter = new ManualResetEventSlim();
+        private readonly SemaphoreSlim _readLineWaiter = new SemaphoreSlim(0, 1);
 
         private readonly ConcurrentQueue<string> _output = new ConcurrentQueue<string>();
         private readonly object _outputLock = new object();
@@ -52,26 +52,37 @@ namespace Test.It.While.Hosting.Your.Console.Application.Consoles
         {
             while (true)
             {
-                if (_readableLines.TryDequeue(out var readLine))
-                {
-                    return readLine;
-                }
 
-                if (_readLineWaiter.Wait(TimeSpan.FromSeconds(ReadTimeoutInSeconds)))
-                {
-                    continue;
-                }
-
-                throw new TimeoutException($"Waited for input for {ReadTimeoutInSeconds} seconds.");
             }
         }
 
-        public string Title { get; set; }
+        public async ValueTask<string> ReadAsync(
+            TimeSpan timeout = default,
+            CancellationToken cancellationToken = default)
+        {
+            if (timeout == default)
+            {
+                timeout = new TimeSpan(ReadTimeoutInSeconds * 1000);
+            }
+
+            if (await _readLineWaiter.WaitAsync(timeout, cancellationToken)
+                                     .ConfigureAwait(false) == false)
+            {
+                throw new TimeoutException($"Waited for input for {ReadTimeoutInSeconds} seconds.");
+            }
+
+            if (_readableLines.TryDequeue(out var readLine))
+            {
+                return readLine;
+            }
+
+            throw new InvalidOperationException("Mutex out of sync");
+        }
 
         public void Input(string line)
         {
             _readableLines.Enqueue(line);
-            _readLineWaiter.Set();
+            _readLineWaiter.Release();
         }
 
         private event EventHandler<int> DisconnectedPrivate;

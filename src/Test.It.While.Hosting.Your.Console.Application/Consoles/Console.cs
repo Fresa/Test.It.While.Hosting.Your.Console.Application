@@ -1,21 +1,22 @@
-﻿namespace Test.It.While.Hosting.Your.Console.Application.Consoles
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace Test.It.While.Hosting.Your.Console.Application.Consoles
 {
     public class Console : IConsole
     {
-        public string Title
-        {
-            get => System.Console.Title;
-            set => System.Console.Title = value;
-        }
-
         public void WriteLine(string message)
         {
             System.Console.WriteLine(message);
         }
 
-        public string ReadLine()
+        public async ValueTask<string> ReadAsync(
+            TimeSpan timeout = default,
+            CancellationToken cancellationToken = default)
         {
-            return System.Console.ReadLine();
+            return await System.Console.In.ReadLineAsync()
+                               .ConfigureAwait(false);
         }
     }
 }
