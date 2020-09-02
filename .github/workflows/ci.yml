@@ -36,5 +36,6 @@ jobs:
       with:
         # Filepath of the project to be packaged, relative to root of repository
         PROJECT_FILE_PATH: src/Test.It.While.Hosting.Your.Console.Application/Test.It.While.Hosting.Your.Console.Application.csproj
-        VERSION_STATIC: ${{ steps.set-version.outputs.new_tag }}
+        VERSION_STATIC: ${{ steps.set-version.outputs.new_version }}
         TAG_COMMIT: false
+        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
