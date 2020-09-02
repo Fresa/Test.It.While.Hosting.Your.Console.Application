@@ -6,6 +6,7 @@ namespace Test.It.While.Hosting.Your.Console.Application.Consoles
     {
         event EventHandler<string> OutputReceived;
         event EventHandler<int> Disconnected;
+        event HandleExceptionAsync OnUnhandledExceptionAsync;
         void Input(string message);
     }
 }

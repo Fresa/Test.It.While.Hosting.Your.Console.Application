@@ -158,7 +158,4 @@ namespace Test.It.While.Hosting.Your.Console.Application.Consoles
         }
         #endregion
     }
-
-    public delegate Task HandleExceptionAsync(Exception exception,
-        CancellationToken cancellationToken);
 }

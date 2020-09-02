@@ -24,11 +24,15 @@ namespace Test.It.While.Hosting.Your.Console.Application
             }
             catch (Exception e)
             {
-                OnUnhandledException?.Invoke(e);
+                if (OnUnhandledException != null)
+                {
+                    await OnUnhandledException.Invoke(e, cancellationToken)
+                                           .ConfigureAwait(false);
+                }
                 return -1;
             }
         }
 
-        public event Action<Exception> OnUnhandledException;
+        public event HandleExceptionAsync OnUnhandledException;
     }
 }

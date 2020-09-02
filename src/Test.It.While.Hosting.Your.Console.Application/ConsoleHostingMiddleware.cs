@@ -55,9 +55,9 @@ namespace Test.It.While.Hosting.Your.Console.Application
             }
         }
 
-        private void OnUnhandledException(Exception exception)
+        private async Task OnUnhandledException(Exception exception, CancellationToken cancellationToken)
         {
-            _hostController.RaiseExceptionAsync(exception)
+            await _hostController.RaiseExceptionAsync(exception, cancellationToken)
                            .ConfigureAwait(false);
         }
     }

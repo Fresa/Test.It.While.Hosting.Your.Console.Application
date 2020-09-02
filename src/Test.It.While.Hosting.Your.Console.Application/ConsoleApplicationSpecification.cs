@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Test.It.While.Hosting.Your.Console.Application.Consoles;
@@ -11,6 +14,7 @@ namespace Test.It.While.Hosting.Your.Console.Application
         where THostStarter : class, IConsoleApplicationHostStarter, new()
     {
         private readonly SemaphoreSlim _waitForDisconnect = new SemaphoreSlim(0);
+        private readonly ConcurrentQueue<Exception> _exceptions = new ConcurrentQueue<Exception>();
 
         /// <summary>
         /// Start arguments. Defaults to none.
@@ -35,6 +39,7 @@ namespace Test.It.While.Hosting.Your.Console.Application
         public async Task SetConfigurationAsync(THostStarter hostStarter, CancellationToken cancellationToken = default)
         {
             Client = hostStarter.Create(new SimpleTestConfigurer(Given), StartArguments.ToArray());
+            Client.OnUnhandledExceptionAsync += OnUnhandledExceptionAsync;
             Client.Disconnected += (sender, exitCode) =>
             {
                 ExitCode = exitCode;
@@ -56,6 +61,43 @@ namespace Test.It.While.Hosting.Your.Console.Application
 
             await _waitForDisconnect.WaitAsync(timeoutCancellationToken)
                                     .ConfigureAwait(false);
+            
+            HandleExceptions();
+        }
+
+        private void HandleExceptions()
+        {
+            if (_exceptions.Any() == false)
+            {
+                return;
+            }
+
+            var uniqueExceptions = _exceptions.Distinct()
+                                              .ToList();
+            if (uniqueExceptions.Count == 1)
+            {
+                ExceptionDispatchInfo.Capture(uniqueExceptions.First()).Throw();
+            }
+
+            throw new AggregateException(uniqueExceptions);
+        }
+
+        private Task OnUnhandledExceptionAsync(
+            Exception exception,
+            CancellationToken cancellationToken)
+        {
+            if (!(exception is AggregateException aggregateException))
+            {
+                _exceptions.Enqueue(exception);
+                return Task.CompletedTask;
+            }
+
+            foreach (var innerException in aggregateException.InnerExceptions)
+            {
+                _exceptions.Enqueue(innerException);
+            }
+        
+            return Task.CompletedTask;
         }
 
         /// <summary>

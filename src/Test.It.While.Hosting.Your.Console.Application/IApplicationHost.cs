@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 
 namespace Test.It.While.Hosting.Your.Console.Application
@@ -17,6 +16,6 @@ namespace Test.It.While.Hosting.Your.Console.Application
         /// <summary>
         /// Unhandled exception event
         /// </summary>
-        event Action<Exception> OnUnhandledException;
+        event HandleExceptionAsync OnUnhandledException;
     }
 }
