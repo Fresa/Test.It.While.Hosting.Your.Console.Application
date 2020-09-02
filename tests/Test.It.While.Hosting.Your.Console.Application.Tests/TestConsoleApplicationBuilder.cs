@@ -1,6 +1,6 @@
+using System.Threading;
 using System.Threading.Tasks;
 using Test.It.Specifications;
-using Test.It.While.Hosting.Your.Console.Application.Consoles;
 
 namespace Test.It.While.Hosting.Your.Console.Application.Tests
 {
@@ -23,8 +23,9 @@ namespace Test.It.While.Hosting.Your.Console.Application.Tests
             }
 
             public async Task<int> RunAsync(
+                CancellationToken cancellationToken = default,
                 params string[] args)
-                => await _app.StartAsync(args)
+                => await _app.StartAsync(args, cancellationToken)
                              .ConfigureAwait(false);
         }
     }

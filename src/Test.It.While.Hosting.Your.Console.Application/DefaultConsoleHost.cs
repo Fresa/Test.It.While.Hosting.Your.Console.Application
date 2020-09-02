@@ -19,7 +19,7 @@ namespace Test.It.While.Hosting.Your.Console.Application
         {
             try
             {
-                return await _application.RunAsync(args)
+                return await _application.RunAsync(args: args, cancellationToken: cancellationToken)
                                          .ConfigureAwait(false);
             }
             catch (Exception e)

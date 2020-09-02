@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Test.It.While.Hosting.Your.Console.Application.Consoles;
 
@@ -22,10 +23,10 @@ namespace Test.It.While.Hosting.Your.Console.Application.Tests
         }
 
         public async Task<int> StartAsync(
-            params string[] args)
+            string[] args, CancellationToken cancellationToken = default)
         {
             _console.WriteLine(
-                await _console.ReadAsync()
+                await _console.ReadAsync(cancellationToken: cancellationToken)
                               .ConfigureAwait(false));
             _console.WriteLine("Arguments: " + string.Join(", ", args));
             Stopped?.Invoke(this, 0);
