@@ -34,11 +34,5 @@ jobs:
       if: ${{ steps.set-version.outputs.new_version && github.ref == 'refs/heads/master' }}
       run: dotnet pack src/Test.It.While.Hosting.Your.Console.Application/Test.It.While.Hosting.Your.Console.Application.csproj --no-build -p:PackageVersion=${{ steps.set-version.outputs.new_version }} -p:PackageReleaseNotes="${{ steps.set-version.outputs.changelog }}" -c Release -o nuget-packages
     - name: Publish to nuget.org
-      uses: rohith/publish-nuget@v2
       if: ${{ steps.set-version.outputs.new_version && github.ref == 'refs/heads/master' }}
-      with:
-        # Filepath of the project to be packaged, relative to root of repository
-        PROJECT_FILE_PATH: src/Test.It.While.Hosting.Your.Console.Application/Test.It.While.Hosting.Your.Console.Application.csproj
-        VERSION_STATIC: ${{ steps.set-version.outputs.new_version }}
-        TAG_COMMIT: false
-        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+      run: dotnet nuget push nuget-packages/*.nupkg --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
